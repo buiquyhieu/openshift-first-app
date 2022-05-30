@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MvcProj.Models;
+using OfficeOpenXml;
 
 namespace MvcProj.Controllers;
 
@@ -15,7 +16,26 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+
+
         return View();
+    }
+
+    public IActionResult GetExcel()
+    {
+        if (!Directory.Exists("./Temp"))
+            Directory.CreateDirectory("./Temp");
+
+        FileInfo excelFile = new($"./Temp/file_{DateTime.UtcNow:ddMMyyyy_HHmmss}.xlsx");
+
+        using var excel = new ExcelPackage();
+        var sheet = excel.Workbook.Worksheets.Add("sheet 1");
+        sheet.Cells[1, 1].Value = "test value";
+
+        excel.SaveAs(excelFile);
+
+        var directory = Directory.GetCurrentDirectory();
+        return Json(new { Directory = directory });
     }
 
     public IActionResult Privacy()
