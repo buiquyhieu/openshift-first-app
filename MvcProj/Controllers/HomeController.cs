@@ -26,7 +26,8 @@ public class HomeController : Controller
         if (!Directory.Exists("./Temp"))
             Directory.CreateDirectory("./Temp");
 
-        FileInfo excelFile = new($"./Temp/file_{DateTime.UtcNow:ddMMyyyy_HHmmss}.xlsx");
+        string fileName = $"./Temp/file_{DateTime.UtcNow:ddMMyyyy_HHmmss}.xlsx";
+        FileInfo excelFile = new(fileName);
 
         using var excel = new ExcelPackage();
         var sheet = excel.Workbook.Worksheets.Add("sheet 1");
@@ -35,7 +36,7 @@ public class HomeController : Controller
         excel.SaveAs(excelFile);
 
         var directory = Directory.GetCurrentDirectory();
-        return Json(new { Directory = directory });
+        return Json(new { Directory = directory, fileName });
     }
 
     public IActionResult Privacy()
