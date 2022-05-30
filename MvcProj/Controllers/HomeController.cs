@@ -35,8 +35,14 @@ public class HomeController : Controller
 
         excel.SaveAs(excelFile);
 
-        var directory = Directory.GetCurrentDirectory();
-        return Json(new { Directory = directory, fileName });
+        if (System.IO.File.Exists(fileName))
+        {
+            var bytes = System.IO.File.ReadAllBytes(fileName);
+
+            return File(bytes, "application/vnd.ms-excel", $"file_{DateTime.UtcNow:ddMMyyyy_HHmmss}.xlsx");
+        }
+
+        return Json("Fail!");
     }
 
     public IActionResult Privacy()
