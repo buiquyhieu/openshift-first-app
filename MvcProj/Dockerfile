@@ -1,10 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
-COPY MvcProj/*.csproj ./
+COPY ./*.csproj ./
 RUN dotnet restore
 
-COPY MvcProj/. ./
+COPY ./. ./
 RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
