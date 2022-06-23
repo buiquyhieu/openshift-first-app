@@ -12,5 +12,11 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-USER root
+LABEL io.k8s.display-name="app name" \
+      io.k8s.description="container description..." \
+      io.openshift.expose-services="8080:http"
+	  
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://*:8080
+
 ENTRYPOINT ["dotnet", "MvcProj.dll"]
